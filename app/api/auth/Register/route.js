@@ -23,7 +23,7 @@ export async function POST(req) {
     profileScore,
   } = await req.json();
 
-  // 🛡️ Check access key for recruiter
+  // 🛡 Check access key for recruiter
   if (role === "recruiter" && accessKey !== ALLOWED_RECRUITER_KEY) {
     return NextResponse.json(
       { message: "Invalid recruiter access key" },
@@ -51,7 +51,6 @@ export async function POST(req) {
     });
 
     await newUser.save();
-   
 
     return NextResponse.json(
       { message: "User registered successfully" },

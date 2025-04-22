@@ -11,6 +11,9 @@ import {
   FaEye,
   FaEyeSlash,
   FaPhone,
+  FaGraduationCap,
+  FaClock,
+  FaSuitcase,
 } from "react-icons/fa";
 
 export default function Register() {
@@ -23,6 +26,13 @@ export default function Register() {
     email: "",
     phone: "",
     password: "",
+    accessKey: "",
+    age: "",
+    workExperience: "",
+    graduation: "",
+    currentCourse: "",
+    workStatus: "",
+    profileScore: 0,
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -40,7 +50,11 @@ export default function Register() {
       const res = await fetch("/api/auth/Register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, role }),
+        body: JSON.stringify({
+          ...form,
+          role,
+          accessKey: role === "recruiter" ? form.accessKey : undefined,
+        }),
       });
 
       const data = await res.json();
@@ -49,14 +63,26 @@ export default function Register() {
         setMessage({ type: "error", text: data.message });
       } else {
         setMessage({ type: "success", text: "Account created successfully!" });
-        setForm({ username: "", email: "", phone: "", password: "" });
+        setForm({
+          username: "",
+          email: "",
+          phone: "",
+          password: "",
+          accessKey: "",
+          age: "",
+          workExperience: "",
+          graduation: "",
+          currentCourse: "",
+          workStatus: "",
+          profileScore: 0,
+        });
 
-        // Redirect to login page after 1.5s delay
         setTimeout(() => {
           router.push("/auth/Login");
         }, 1500);
       }
     } catch (err) {
+      console.error("Registration error:", err);
       setMessage({ type: "error", text: "Something went wrong!" });
     }
 
@@ -75,7 +101,7 @@ export default function Register() {
 
         {/* Title */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white">Create Account</h2>
+          <h2 className="text-2xl font-bold">Create Account</h2>
           <p className="text-gray-400 text-sm mt-1">Sign up to get started</p>
         </div>
 
@@ -106,49 +132,35 @@ export default function Register() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Username Input */}
-          <div className="relative">
-            <FaUser className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              name="username"
-              value={form.username}
-              onChange={handleChange}
-              placeholder="Username"
-              className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm bg-gray-700 border-gray-600 text-white"
-              required
-            />
-          </div>
+          {/* Username */}
+          <InputField
+            icon={<FaUser />}
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={form.username}
+            onChange={handleChange}
+          />
+          {/* Email */}
+          <InputField
+            icon={<FaEnvelope />}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+          />
+          {/* Phone */}
+          <InputField
+            icon={<FaPhone />}
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={form.phone}
+            onChange={handleChange}
+          />
 
-          {/* Email Input */}
-          <div className="relative">
-            <FaEnvelope className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="Email address"
-              className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm bg-gray-700 border-gray-600 text-white"
-              required
-            />
-          </div>
-
-          {/* Phone Input */}
-          <div className="relative">
-            <FaPhone className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="tel"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              placeholder="Phone number"
-              className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm bg-gray-700 border-gray-600 text-white"
-              required
-            />
-          </div>
-
-          {/* Password Input */}
+          {/* Password */}
           <div className="relative">
             <FaLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
             <input
@@ -157,51 +169,116 @@ export default function Register() {
               value={form.password}
               onChange={handleChange}
               placeholder="Password"
-              className="pl-10 pr-10 py-2 w-full border rounded-md focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm bg-gray-700 border-gray-600 text-white"
+              className="pl-10 pr-10 py-2 w-full rounded-md text-sm bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 focus:outline-none"
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
+
+          {/* Recruiter Access Key */}
           {role === "recruiter" && (
-            <div className="relative">
-              <FaLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-              <input
-                // type={showPassword ? 'text' : 'password'}
-                type="text"
-                name="password"
-                value={form.password}
+            <>
+              <InputField
+                icon={<FaLock />}
+                type={showPassword ? "text" : "password"}
+                name="accessKey"
+                placeholder="Access Key"
+                value={form.accessKey}
                 onChange={handleChange}
-                placeholder="Access key"
-                className="pl-10 pr-10 py-2 w-full border rounded-md focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm bg-gray-700 border-gray-600 text-white"
-                required
               />
-              <button
-                type="button"
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 focus:outline-none"
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
+
+              <InputField
+                icon={<FaUser />}
+                type="number"
+                name="age"
+                placeholder="Age"
+                value={form.age}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={<FaSuitcase />}
+                type="text"
+                name="workExperience"
+                placeholder="Company Name"
+                value={form.workExperience}
+                onChange={handleChange}
+              />
+
+            
+              <InputField
+                icon={<FaBriefcase />}
+                type="text"
+                name="workStatus"
+                placeholder="Work Status (full-time, part-time)"
+                value={form.workStatus}
+                onChange={handleChange}
+              />
+            </>
           )}
 
-          {/* Submit Button */}
+          {/* Extra Fields for Employee */}
+          {role === "employee" && (
+            <>
+              <InputField
+                icon={<FaUser />}
+                type="number"
+                name="age"
+                placeholder="Age"
+                value={form.age}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={<FaSuitcase />}
+                type="text"
+                name="workExperience"
+                placeholder="Work Experience"
+                value={form.workExperience}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={<FaGraduationCap />}
+                type="number"
+                name="graduation"
+                placeholder="Graduation Year"
+                value={form.graduation}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={<FaClock />}
+                type="text"
+                name="currentCourse"
+                placeholder="Current Course"
+                value={form.currentCourse}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={<FaBriefcase />}
+                type="text"
+                name="workStatus"
+                placeholder="Work Status (full-time, part-time)"
+                value={form.workStatus}
+                onChange={handleChange}
+              />
+            </>
+          )}
+
+          {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-md font-semibold transition"
             disabled={loading}
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-md font-semibold transition"
           >
-            <FaUser className="inline-block mr-2 mb-1" />
             {loading ? "Creating..." : "Create Account"}
           </button>
         </form>
 
-        {/* Message Display */}
+        {/* Message */}
         {message.text && (
           <p
             className={`text-center text-sm ${
@@ -212,7 +289,7 @@ export default function Register() {
           </p>
         )}
 
-        {/* Footer */}
+        {/* Login Redirect */}
         <p className="text-center text-sm text-gray-400">
           Already have an account?{" "}
           <Link href="/auth/Login" className="text-orange-400 hover:underline">
@@ -223,3 +300,21 @@ export default function Register() {
     </div>
   );
 }
+
+// 🔧 Reusable Input Field
+const InputField = ({ icon, type, name, value, onChange, placeholder }) => (
+  <div className="relative">
+    <div className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400">
+      {icon}
+    </div>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className="pl-10 pr-4 py-2 w-full border rounded-md text-sm bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+      required
+    />
+  </div>
+);
