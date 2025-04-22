@@ -1,17 +1,28 @@
-import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
-import User from '@/models/user';
-import bcrypt from 'bcryptjs';
+import { NextResponse } from "next/server";
+import connectDB from "@/lib/db";
+import User from "@/models/user";
+import bcrypt from "bcryptjs";
 
 export async function POST(request) {
   try {
     await connectDB();
 
-    const { username, email, phone, password, role } = await request.json();
+    const {
+      username,
+      email,
+      phone,
+      password,
+      role,
+      age,
+      workExperience,
+      graduation,
+      currentCourse,
+      workStatus,
+    } = await request.json();
 
     if (!username || !email || !phone || !password || !role) {
       return NextResponse.json(
-        { message: 'All fields are required' },
+        { message: "All fields are required" },
         { status: 400 }
       );
     }
@@ -20,7 +31,7 @@ export async function POST(request) {
 
     if (existingUser) {
       return NextResponse.json(
-        { message: 'User already exists' },
+        { message: "User already exists" },
         { status: 409 }
       );
     }
@@ -33,19 +44,23 @@ export async function POST(request) {
       phone,
       password: hashedPassword,
       role,
-      createdAt: new Date(),
+      age,
+      workExperience,
+      graduation,
+      currentCourse,
+      workStatus,
     });
 
     await newUser.save();
 
     return NextResponse.json(
-      { message: 'Account created successfully!' },
+      { message: "Account created successfully!" },
       { status: 201 }
     );
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error("Registration error:", error);
     return NextResponse.json(
-      { message: 'Internal server error' },
+      { message: "Internal server error" },
       { status: 500 }
     );
   }

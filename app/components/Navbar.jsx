@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -8,16 +8,26 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center relative">
-  <div className="w-8 h-8 rounded-full bg-orange-500 absolute"></div>
-  <span className="text-xl font-semibold text-white ml-2 z-1">WorkRizz</span>
-</Link>
+          <div className="w-8 h-8 rounded-full bg-orange-500 absolute"></div>
+          <span className="text-xl font-semibold text-white ml-2 z-1">
+            WorkRizz
+          </span>
+        </Link>
 
         {/* Nav Links */}
         <nav className="hidden ml-12 md:flex gap-8 text-gray-300 font-medium">
-          <Link href="/" className="hover:text-white transition">Find Jobs</Link>
-          <Link href="/people" className="hover:text-white transition">People</Link>
-          <Link href="/education" className="hover:text-white transition">Education</Link>
-          <Link href="/blog" className="hover:text-white transition">Blog</Link>
+          <Link href="/" className="hover:text-white transition">
+            Find Jobs
+          </Link>
+          <Link href="/people" className="hover:text-white transition">
+            People
+          </Link>
+          <Link href="/education" className="hover:text-white transition">
+            Education
+          </Link>
+          <Link href="/blog" className="hover:text-white transition">
+            Blog
+          </Link>
         </nav>
 
         {/* Action Buttons */}
