@@ -1,16 +1,21 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   username: String,
   email: { type: String, unique: true },
   password: String,
   phone: String,
-  role: { type: String, enum: ['employee', 'recruiter'] },
+  role: { type: String, enum: ["employee", "recruiter"] },
+  accessKey: String,
   age: Number,
   workExperience: String,
   graduation: Number,
   currentCourse: String,
-  workStatus: { type: String, enum: ['intern', 'full-time'] }
+  workStatus: { type: String, enum: ["intern", "full-time"] },
+  profileScore: {
+    type: Number,
+    default: 0,
+  },
 });
 
-export default mongoose.models.User || mongoose.model('User', userSchema);
+export default mongoose.models.User || mongoose.model("User", userSchema);

@@ -21,26 +21,28 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Submitting form...');
-  
+    
     setError('');
-  
+    
     try {
       const res = await fetch('/api/auth/Login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, role }),
+        body: JSON.stringify({ email: form.email, password: form.password }),
       });
   
       const data = await res.json();
       console.log('Response:', res);
       console.log('Data:', data);
-  
+    
       if (!res.ok) {
         setError(data.message || 'Login failed');
       } else {
         console.log('Login successful');
         localStorage.setItem('user', JSON.stringify(data.user));
-  
+        localStorage.setItem('token', data.token); 
+        
+        // You can now redirect based on user role
         if (data.user.role === 'employee') {
           router.push('/dashboard/employee');
         } else if (data.user.role === 'recruiter') {
@@ -52,6 +54,7 @@ export default function Login() {
       setError('Something went wrong. Please try again.');
     }
   };
+  
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-900">
