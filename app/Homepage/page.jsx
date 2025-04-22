@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch } from 'react-icons/fi';
 
 export default function HomePage() {
   return (
@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="absolute top-20 left-8">
           <div className="text-pink-400 text-3xl">✧</div>
         </div>
-
+        
         {/* Profile circles - Left side */}
         <div className="hidden md:block">
           <div className="absolute top-40 left-20">
@@ -20,7 +20,7 @@ export default function HomePage() {
             <div className="w-24 h-24 rounded-full bg-pink-300 overflow-hidden"></div>
           </div>
         </div>
-
+        
         {/* Profile circles - Right side */}
         <div className="hidden md:block">
           <div className="absolute top-40 right-20">
@@ -41,34 +41,34 @@ export default function HomePage() {
               in New Castle
             </h1>
             <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-              When you're searching for a job, there are a few things you can do
-              to get the most out of your search:
+              When you're searching for a job, there are a few things you can 
+              do to get the most out of your search:
             </p>
           </div>
 
           {/* Search bar */}
-          <div className="h-16 flex mb-4">
-            <div className="w-full bg-white border-2 border-orange-500  rounded-md flex items-center overflow-hidden ">
-              <div className="  ml-2 rounded-md p-3 bg-orange-500 text-white flex items-center justify-center">
-                <FiSearch size={18} />
-              </div>
-              <input
-                type="text"
-                placeholder="Job title, keyword or company"
-                className="flex-1 p-3 outline-none text-gray-700 placeholder:text-gray-700 font-semibold bg-transparent"
-              />
-              <div className="bg-gray-100 border-gray-700 mr-2 rounded-md flex items-center">
-                <div className="text-orange-500 mx-3">●</div>
-                <select className="bg-transparent text-gray-700 py-3 pr-4 outline-none appearance-none">
-                  <option>Any location</option>
-                  <option>Remote</option>
-                  <option>New Castle</option>
-                  <option>Other cities</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
+<div className="h-16 flex mb-4">
+  <div className="w-full bg-white border-2 border-orange-500  rounded-md flex items-center overflow-hidden ">
+    <div className="  ml-2 rounded-md p-3 bg-orange-500 text-white flex items-center justify-center">
+      <FiSearch size={18} />
+    </div>
+    <input
+      type="text"
+      placeholder="Job title, keyword or company"
+      className="flex-1 p-3 outline-none text-gray-700 placeholder:text-gray-700 font-semibold bg-transparent"
+    />
+    <div className="bg-gray-100 border-gray-700 mr-2 rounded-md flex items-center">
+      <div className="text-orange-500 mx-3">●</div>
+      <select className="bg-transparent text-gray-700 py-3 pr-4 outline-none appearance-none">
+        <option>Any location</option>
+        <option>Remote</option>
+        <option>New Castle</option>
+        <option>Other cities</option>
+      </select>
+    </div>
+  </div>
+</div>
+          
           {/* Jobs counter */}
           <div className="text-green-400 font-medium">
             21,701,403 Total Jobs Posted

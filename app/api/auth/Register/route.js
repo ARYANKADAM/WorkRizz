@@ -3,64 +3,64 @@ import connectDB from "@/lib/db";
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
 
-export async function POST(request) {
+const ALLOWED_RECRUITER_KEY = "admin"; // ideally from env: process.env.RECRUITER_KEY
+
+export async function POST(req) {
+  await connectDB();
+
+  const {
+    username,
+    email,
+    password,
+    phone,
+    role,
+    accessKey,
+    age,
+    workExperience,
+    graduation,
+    currentCourse,
+    workStatus,
+    profileScore,
+  } = await req.json();
+
+  // 🛡️ Check access key for recruiter
+  if (role === "recruiter" && accessKey !== ALLOWED_RECRUITER_KEY) {
+    return NextResponse.json(
+      { message: "Invalid recruiter access key" },
+      { status: 403 }
+    );
+  }
+
   try {
-    await connectDB();
-
-    const {
-      username,
-      email,
-      phone,
-      password,
-      role,
-      age,
-      workExperience,
-      graduation,
-      currentCourse,
-      workStatus,
-    } = await request.json();
-
-    if (!username || !email || !phone || !password || !role) {
-      return NextResponse.json(
-        { message: "All fields are required" },
-        { status: 400 }
-      );
-    }
-
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return NextResponse.json(
-        { message: "User already exists" },
-        { status: 409 }
-      );
-    }
-
+    // 🔐 Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
       username,
       email,
-      phone,
       password: hashedPassword,
+      phone,
       role,
+      accessKey: role === "recruiter" ? accessKey : undefined,
       age,
       workExperience,
       graduation,
       currentCourse,
       workStatus,
+      profileScore,
     });
 
     await newUser.save();
+   
 
     return NextResponse.json(
-      { message: "Account created successfully!" },
+      { message: "User registered successfully" },
       { status: 201 }
     );
   } catch (error) {
     console.error("Registration error:", error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Registration failed", error: error.message },
       { status: 500 }
     );
   }
