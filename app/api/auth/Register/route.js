@@ -7,13 +7,31 @@ export async function POST(request) {
   try {
     await connectDB();
 
-    const { username, email, phone, password, role } = await request.json();
+    const { 
+      username, 
+      email, 
+      phone, 
+      password, 
+      role,
+      age, 
+      graduation, 
+      currentCourse,
+      workStatus, 
+    } = await request.json();
 
+    // Basic validation for all users
     if (!username || !email || !phone || !password || !role) {
       return NextResponse.json(
         { message: 'All fields are required' },
         { status: 400 }
       );
+    }
+
+    // Additional validation for employee role
+    if (role === 'employee') {
+      if (!age || !graduation || !currentCourse || !workStatus) {
+        return NextResponse.json({ message: 'All employee fields are required' }, { status: 400 });
+      }
     }
 
     const existingUser = await User.findOne({ email });
@@ -27,15 +45,25 @@ export async function POST(request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({
+    // Create user object with base fields
+    const userData = {
       username,
       email,
       phone,
       password: hashedPassword,
       role,
       createdAt: new Date(),
-    });
+    };
 
+    // Add employee-specific fields if role is employee
+    if (role === 'employee') {
+      userData.age = age;
+      userData.graduation = graduation;
+      userData.currentCourse = currentCourse;
+      userData.workStatus = workStatus;
+    }
+
+    const newUser = new User(userData);
     await newUser.save();
 
     return NextResponse.json(

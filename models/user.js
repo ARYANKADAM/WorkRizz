@@ -5,7 +5,12 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
   phone: String,
-  role: { type: String, enum: ['employee', 'recruiter'] }
+  role: { type: String, enum: ['employee', 'recruiter'] },
+  age: Number,
+  workExperience: String,
+  graduation: Number,
+  currentCourse: String,
+  workStatus: { type: String, enum: ['intern', 'full-time'] }
 });
 
-export default mongoose.models.User || mongoose.model('User', userSchema);
+export default mongoose.models.User || mongoose.model('User', userSchema);
