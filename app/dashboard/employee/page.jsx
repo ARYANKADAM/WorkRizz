@@ -340,7 +340,7 @@ export default function EmployeeDashboard() {
                   onClick={() => handleApply(job._id)}
                   className="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition-colors"
                 >
-                  Details
+                  Apply
                 </button>
               </div>
             </div>

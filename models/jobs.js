@@ -30,6 +30,12 @@ const jobSchema = new mongoose.Schema({
     type: String,
     default: "Draft",
   },
+  minimumProfileScore: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 100,
+  },
   applicationsCount: {
     type: Number,
     default: 0,

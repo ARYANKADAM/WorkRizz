@@ -35,6 +35,7 @@ export async function POST(request, { params }) {
         { status: 404 }
       );
     }
+    
 
     // Check if already applied
     const existingApplication = await JobApplication.findOne({
